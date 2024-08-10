@@ -1,0 +1,296 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compatibility Quiz with Sagar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Are You Compatible with Sagar?</h1>
+        <div class="progress-bar" id="progressBar"></div>
+        <form id="quizForm">
+            <div class="question" id="questionContainer">
+                <!-- Questions will be dynamically inserted here -->
+            </div>
+            <button type="button" onclick="nextQuestion()">Next</button>
+        </form>
+
+        <div id="result" class="hidden">
+            <h2>Your Compatibility Score: <span id="score">0</span>%</h2>
+            <p id="message"></p>
+            <button id="instagramButton" class="hidden" onclick="redirectToInstagram()">Visit Sagar's Secret Link</button>
+            <button id="retryButton" onclick="retryQuiz()">Retry</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<style>body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1e1e2f, #28293d);
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+    background-color: #28293d;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 1s ease-in-out;
+    max-width: 600px;
+    width: 100%;
+}
+
+h1 {
+    color: #ff6b6b;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    overflow-wrap: break-word;
+}
+
+.progress-bar {
+    height: 10px;
+    background-color: #ff6b6b;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    transition: width 0.3s ease;
+}
+
+.question p {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+label {
+    font-size: 1em;
+    display: block;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #ff6b6b;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #ff4757;
+}
+
+#result {
+    margin-top: 20px;
+    animation: fadeInUp 1s ease-in-out;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.heart-background {
+    background: url('https://emoji-api.com/emojis/heart.png') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.broken-heart-background {
+    background: url('https://emoji-api.com/emojis/broken-heart.png') no-repeat center center fixed;
+    background-size: cover;
+}
+
+
+
+/* No change in existing CSS */
+#retryButton {
+    margin-top: 10px;
+    background-color: #ffffff;
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#retryButton:hover {
+    background-color: #ff6b6b;
+    color: #ffffff;
+}
+</style><script>const questions = [
+    "Do you enjoy edgy or dark humor?",
+    "Do you have short hair or wear glasses?",
+    "Do you compliment people often?",
+    "Do you like bringing food to others?",
+    "Are you someone who can be non-judgmental and trustworthy?",
+    "Do you enjoy intellectual debates and discussions?",
+    "Are you comfortable with change and spontaneity?",
+    "Do you enjoy taking risks and trying new things?",
+    "Are you someone who can handle being challenged and enjoy a good argument?",
+    "Do you value creativity and originality in yourself and others?"
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+
+function showQuestion(index) {
+    const questionContainer = document.getElementById('questionContainer');
+    questionContainer.innerHTML = `
+        <div class="question fadeInLeft">
+            <p>${questions[index]}</p>
+            <label><input type="radio" name="answer" value="10">Yes</label>
+            <label><input type="radio" name="answer" value="0">No</label>
+        </div>
+    `;
+}
+
+function nextQuestion() {
+    const form = document.getElementById('quizForm');
+    const selectedOption = form.querySelector('input[name="answer"]:checked');
+    if (selectedOption) {
+        score += parseInt(selectedOption.value);
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < questions.length) {
+            showQuestion(currentQuestionIndex);
+            updateProgressBar();
+        } else {
+            displayResult();
+        }
+    } else {
+        alert("Please select an answer.");
+    }
+}
+
+function updateProgressBar() {
+    const progressBar = document.getElementById('progressBar');
+    const percentage = ((currentQuestionIndex + 1) / questions.length) * 100;
+    progressBar.style.width = `${percentage}%`;
+}
+
+function displayResult() {
+    const userName = prompt("Enter your name:");
+    const resultDiv = document.getElementById('result');
+    const scoreSpan = document.getElementById('score');
+    const message = document.getElementById('message');
+    const instagramButton = document.getElementById('instagramButton');
+
+    const finalScore = Math.round((score / (questions.length * 10)) * 100);
+    scoreSpan.textContent = `${userName}, your score is ${finalScore}%`;
+
+    if (finalScore >= 90) {
+        document.body.classList.add('heart-background');
+        document.body.classList.remove('broken-heart-background');
+        message.textContent = "Bro wtf, we are soulmates ❤";
+        instagramButton.classList.remove('hidden');
+    } else if (finalScore >= 80) {
+        document.body.classList.add('heart-background');
+        document.body.classList.remove('broken-heart-background');
+        message.textContent = "You know me well, I would give you that";
+        instagramButton.classList.remove('hidden');
+    } else if (finalScore >= 70) {
+        document.body.classList.add('heart-background');
+        document.body.classList.remove('broken-heart-background');
+        message.textContent = "Okay close, you are close";
+        instagramButton.classList.remove('hidden');
+    } else if (finalScore >= 60) {
+        document.body.classList.add('heart-background');
+        document.body.classList.remove('broken-heart-background');
+        message.textContent = "Ahm, my average friend";
+        instagramButton.classList.remove('hidden');
+    } else if (finalScore >= 50) {
+        document.body.classList.add('broken-heart-background');
+        document.body.classList.remove('heart-background');
+        message.textContent = "I like you only half the time";
+        instagramButton.classList.add('hidden');
+    } else if (finalScore >= 40) {
+        document.body.classList.add('broken-heart-background');
+        document.body.classList.remove('heart-background');
+        message.textContent = "Okay, you are close but not close enough";
+        instagramButton.classList.add('hidden');
+    } else if (finalScore >= 30) {
+        document.body.classList.add('broken-heart-background');
+        document.body.classList.remove('heart-background');
+        message.textContent = "Bhai, itna galat kaise?";
+        instagramButton.classList.add('hidden');
+    } else if (finalScore >= 20) {
+        document.body.classList.add('broken-heart-background');
+        document.body.classList.remove('heart-background');
+        message.textContent = "Bhai, itna galat kaise?";
+        instagramButton.classList.add('hidden');
+    } else {
+        document.body.classList.add('broken-heart-background');
+        document.body.classList.remove('heart-background');
+        message.textContent = "Damn, did not expect this from you 💔";
+        instagramButton.classList.add('hidden');
+    }
+
+    resultDiv.classList.remove('hidden');
+    document.getElementById('quizForm').classList.add('hidden');
+}
+
+function retryQuiz() {
+    // Reset score and question index
+    score = 0;
+    currentQuestionIndex = 0;
+
+    // Reset backgrounds and visibility
+    document.body.classList.remove('heart-background', 'broken-heart-background');
+    document.getElementById('result').classList.add('hidden');
+    document.getElementById('quizForm').classList.remove('hidden');
+
+    // Reset progress bar
+    updateProgressBar();
+
+    // Start the quiz again
+    showQuestion(currentQuestionIndex);
+}
+
+function redirectToInstagram() {
+    window.location.href = 'https://familyporn.tv/';
+}
+
+// Initialize the first question
+showQuestion(currentQuestionIndex);
+</script>
